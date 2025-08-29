@@ -1067,3 +1067,41 @@ context("Linear Mixed Models")
   })
 }
 
+### Test diagnostics functionality
+{
+  options <- jaspTools::analysisOptions("MixedModelsLMM")
+  options$dependent <- "contNormal"
+  options$fixedVariables <- c("facFive")
+  options$randomVariables <- "contBinom"
+  options$fixedEffects <- list(list(components = "facFive"))
+  options$randomEffects <- list(list(randomEffects = "facFive", groupingFactor = "contBinom"))
+  
+  # Enable diagnostics options
+  options$diagNormality <- TRUE
+  options$diagVif <- TRUE
+  options$diagVifThreshold <- 3.0
+  options$diagR2 <- TRUE
+  options$diagRMSE <- TRUE
+  options$diagModelComparison <- TRUE
+  options$diagPlotResiduals <- TRUE
+  
+  set.seed(1)
+  results <- jaspTools::runAnalysis("MixedModelsLMM", "debug", options)
+
+  test_that("Model diagnostics container is created", {
+    expect_true(!is.null(results[["results"]][["modelDiagnostics"]]))
+  })
+
+  test_that("Assumptions table is created when enabled", {
+    expect_true(!is.null(results[["results"]][["modelDiagnostics"]][["assumptionsTable"]]))
+  })
+
+  test_that("VIF table is created when enabled", {
+    expect_true(!is.null(results[["results"]][["modelDiagnostics"]][["vifTable"]]))
+  })
+
+  test_that("Performance table is created when enabled", {
+    expect_true(!is.null(results[["results"]][["modelDiagnostics"]][["performanceTable"]]))
+  })
+}
+
