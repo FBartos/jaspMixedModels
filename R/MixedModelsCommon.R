@@ -66,6 +66,13 @@
         .mmDiagnostics(jaspResults, options, dataset, type)
     }
 
+    # classical diagnostics
+    if (type %in% c("LMM", "GLMM")) {
+      if (isTRUE(options$diagnosticsPredictedVsResiduals) || isTRUE(options$diagnosticsResidualsVsPredictors) || 
+          isTRUE(options$diagnosticsHistogramResiduals) || isTRUE(options$diagnosticsQQResiduals))
+        .mmClassicalDiagnostics(jaspResults, options, dataset, type)
+    }
+
 
     # create plots
     if (length(options$plotHorizontalAxis))
@@ -2553,6 +2560,71 @@
   return()
 }
 
+.mmClassicalDiagnostics <- function(jaspResults, options, dataset, type = "LMM") {
+
+  if (!is.null(jaspResults[["classicalDiagnosticPlots"]]))
+    return()
+
+  classicalDiagnosticPlots <- createJaspContainer(title = gettext("Model diagnostics"))
+  classicalDiagnosticPlots$position <- 6.5
+  classicalDiagnosticPlots$dependOn(c("diagnosticsPredictedVsResiduals", 
+                                     "diagnosticsResidualsVsPredictors",
+                                     "diagnosticsHistogramResiduals", 
+                                     "diagnosticsQQResiduals"))
+  jaspResults[["classicalDiagnosticPlots"]] <- classicalDiagnosticPlots
+
+  # check if model exists
+  if (is.null(jaspResults[["mmModel"]]) || jaspResults[["mmModel"]]$getError()) {
+    classicalDiagnosticPlots[["emptyPlot"]] <- createJaspPlot()
+    return()
+  }
+
+  model <- jaspResults[["mmModel"]]$object$model
+
+  # extract model components
+  if (type == "GLMM") {
+    # for GLMM, check if it's a list (from afex)
+    if (is.list(model$full_model)) {
+      fitModel <- model$full_model[[length(model$full_model)]]
+    } else {
+      fitModel <- model$full_model
+    }
+  } else {
+    # for LMM
+    if (is.list(model)) {
+      fitModel <- model[[length(model)]]
+    } else {
+      fitModel <- model
+    }
+  }
+
+  # extract residuals and fitted values
+  residuals <- stats::residuals(fitModel)
+  fitted <- stats::fitted(fitModel)
+  
+  # get predictor variables from the dataset
+  fixedVariables <- options$fixedVariables
+  
+  # create plots based on selected diagnostics
+  if (isTRUE(options$diagnosticsPredictedVsResiduals)) {
+    .mmCreatePredictedVsResidualsPlot(classicalDiagnosticPlots, fitted, residuals)
+  }
+  
+  if (isTRUE(options$diagnosticsResidualsVsPredictors)) {
+    .mmCreateResidualsVsPredictorsPlots(classicalDiagnosticPlots, dataset, fixedVariables, residuals)
+  }
+  
+  if (isTRUE(options$diagnosticsHistogramResiduals)) {
+    .mmCreateHistogramResidualsPlot(classicalDiagnosticPlots, residuals)
+  }
+  
+  if (isTRUE(options$diagnosticsQQResiduals)) {
+    .mmCreateQQResidualsPlot(classicalDiagnosticPlots, residuals)
+  }
+
+  return()
+}
+
 # helper functions
 .mmVariableNames      <- function(varName, variables) {
 
@@ -2834,6 +2906,130 @@
   "family",
   "link"
 )
+
+.mmCreatePredictedVsResidualsPlot <- function(container, fitted, residuals) {
+  
+  plot <- createJaspPlot(title = gettext("Predicted vs Residuals"))
+  plot$dependOn(c("diagnosticsPredictedVsResiduals"))
+  
+  plotData <- data.frame(
+    predicted = fitted,
+    residuals = residuals
+  )
+  
+  p <- try({
+    jaspGraphs::themeJasp(
+      ggplot2::ggplot(plotData, ggplot2::aes(x = predicted, y = residuals)) +
+        ggplot2::geom_point() +
+        ggplot2::geom_hline(yintercept = 0, linetype = "dashed") +
+        ggplot2::labs(
+          x = gettext("Predicted values"),
+          y = gettext("Residuals"),
+          title = gettext("Predicted vs Residuals")
+        )
+    )
+  })
+  
+  if (jaspBase::isTryError(p)) {
+    plot$setError(gettextf("Plotting failed with error: %s", jaspBase::extractErrorMessage(p)))
+  } else {
+    plot$plotObject <- p
+  }
+  
+  container[["predictedVsResiduals"]] <- plot
+}
+
+.mmCreateResidualsVsPredictorsPlots <- function(container, dataset, fixedVariables, residuals) {
+  
+  for (var in fixedVariables) {
+    plotTitle <- gettextf("Residuals vs %s", var)
+    plot <- createJaspPlot(title = plotTitle)
+    plot$dependOn(c("diagnosticsResidualsVsPredictors"))
+    
+    plotData <- data.frame(
+      predictor = dataset[[var]],
+      residuals = residuals
+    )
+    
+    p <- try({
+      jaspGraphs::themeJasp(
+        ggplot2::ggplot(plotData, ggplot2::aes(x = predictor, y = residuals)) +
+          ggplot2::geom_point() +
+          ggplot2::geom_hline(yintercept = 0, linetype = "dashed") +
+          ggplot2::labs(
+            x = var,
+            y = gettext("Residuals"),
+            title = plotTitle
+          )
+      )
+    })
+    
+    if (jaspBase::isTryError(p)) {
+      plot$setError(gettextf("Plotting failed with error: %s", jaspBase::extractErrorMessage(p)))
+    } else {
+      plot$plotObject <- p
+    }
+    
+    container[[paste0("residualsVs", var)]] <- plot
+  }
+}
+
+.mmCreateHistogramResidualsPlot <- function(container, residuals) {
+  
+  plot <- createJaspPlot(title = gettext("Histogram of Residuals"))
+  plot$dependOn(c("diagnosticsHistogramResiduals"))
+  
+  plotData <- data.frame(residuals = residuals)
+  
+  p <- try({
+    jaspGraphs::themeJasp(
+      ggplot2::ggplot(plotData, ggplot2::aes(x = residuals)) +
+        ggplot2::geom_histogram(bins = 20, color = "black", alpha = 0.7) +
+        ggplot2::labs(
+          x = gettext("Residuals"),
+          y = gettext("Frequency"),
+          title = gettext("Histogram of Residuals")
+        )
+    )
+  })
+  
+  if (jaspBase::isTryError(p)) {
+    plot$setError(gettextf("Plotting failed with error: %s", jaspBase::extractErrorMessage(p)))
+  } else {
+    plot$plotObject <- p
+  }
+  
+  container[["histogramResiduals"]] <- plot
+}
+
+.mmCreateQQResidualsPlot <- function(container, residuals) {
+  
+  plot <- createJaspPlot(title = gettext("QQ Plot of Residuals"))
+  plot$dependOn(c("diagnosticsQQResiduals"))
+  
+  plotData <- data.frame(residuals = residuals)
+  
+  p <- try({
+    jaspGraphs::themeJasp(
+      ggplot2::ggplot(plotData, ggplot2::aes(sample = residuals)) +
+        ggplot2::stat_qq() +
+        ggplot2::stat_qq_line() +
+        ggplot2::labs(
+          x = gettext("Theoretical quantiles"),
+          y = gettext("Sample quantiles"),
+          title = gettext("QQ Plot of Residuals")
+        )
+    )
+  })
+  
+  if (jaspBase::isTryError(p)) {
+    plot$setError(gettextf("Plotting failed with error: %s", jaspBase::extractErrorMessage(p)))
+  } else {
+    plot$plotObject <- p
+  }
+  
+  container[["qqResiduals"]] <- plot
+}
 
 .setOptions <- function() {
   # this needs to be set after the latest afex update (otherwise null on initiation for some reason)
