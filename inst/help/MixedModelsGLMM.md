@@ -62,6 +62,38 @@ Press the button to run the analysis. Model relevant changes in the settings wil
 - Vovk-Selke maximum p-ratio: The bound 1/(-e p log(p)) is derived from the shape of the p-value distribution. Under the null hypothesis (H<sub>0</sub>) it is uniform (0,1), and under the alternative (H<sub>1</sub>) it is decreasing in p, e.g., a beta (α, 1) distribution, where 0 < α < 1. The Vovk-Sellke MPR is obtained by choosing the shape α of the distribution under H1 such that the obtained p-value is maximally diagnostic. The value is then the ratio of the densities at point p under H<sub>0</sub> and H<sub>1</sub>. For example, if the two-sided p-value equals .05, the Vovk-Sellke MPR equals 2.46, indicating that this p-value is at most 2.46 times more likely to occur under H1 than under H<sub>0</sub>. More information can be found in this <a href="https://jasp-stats.org/2017/06/12/mysterious-vs-mpr/">blogpost</a>. 
 
 
+### Diagnostics
+The Diagnostics section provides comprehensive model assumption checking and performance evaluation for generalized linear mixed models, helping assess model validity and quality.
+
+#### Model assumptions
+- Normality of residuals: Performs Shapiro-Wilk test on deviance residuals to check distributional assumptions. Note that for non-normal families (binomial, Poisson, etc.), residuals may not be expected to be normally distributed.
+- Homoscedasticity: Tests for constant error variance using the Breusch-Pagan test on deviance residuals. This test is most meaningful for Gaussian GLMMs.
+- Outliers: Detection of observations that deviate substantially from the model predictions (implementation pending).
+- Influential observations: Identification of observations that have disproportionate influence on model parameters (implementation pending).
+
+#### Multicollinearity
+- Variance inflation factors (VIF): Calculates VIF values for all fixed effect predictors to detect multicollinearity. VIF quantifies how much the variance of regression coefficients increases due to collinearity.
+  - VIF threshold: Set the threshold above which VIF values are considered problematic (default: 3.0). Values above 3 indicate moderate multicollinearity, values above 5 indicate high multicollinearity.
+  - Show warnings for high VIF: Displays warnings when predictors exceed the VIF threshold, with recommendations for variable removal.
+- Tolerance values (1/VIF) are also provided, with values below 0.33 (corresponding to VIF > 3) indicating potential problems.
+
+#### Model performance
+- R-squared values: 
+  - R² (marginal): Proportion of variance explained by fixed effects only on the linear predictor scale.
+  - For non-Gaussian families, interpretation of R² values requires caution as variance explained on the link scale may not translate directly to the response scale.
+- Intraclass correlation coefficient (ICC): Proportion of total variance attributable to clustering/grouping factors (implementation pending).
+- Root mean square error (RMSE): Measure of average prediction error calculated on the response scale.
+- Model comparison metrics: AIC, BIC, and log-likelihood values for model comparison and selection. These are particularly useful for GLMMs as they account for different distributional families.
+
+#### Residual plots
+- Residuals vs fitted values: Scatterplot of deviance residuals vs fitted values to check for non-linear patterns and heteroscedasticity.
+- Q-Q plot of residuals: Quantile-quantile plot of deviance residuals. For non-Gaussian families, deviations from normality may be expected.
+- Scale-location plot: Shows square root of standardized deviance residuals vs fitted values (implementation pending).
+- Leverage plot: Identifies observations with high leverage that may influence model fit (implementation pending).
+
+For GLMMs, residual analysis is more complex than for linear models due to the non-linear link functions and non-normal error distributions. The diagnostics should be interpreted in the context of the chosen distributional family.
+
+
 ### Plots
 - Model factors: Categorical or ordinal fixed effects variables that can be used for visualization.
   - Horizontal axis: Variables that will be plotted on the horizontal axis.

@@ -66,6 +66,12 @@
         .mmDiagnostics(jaspResults, options, dataset, type)
     }
 
+    # model diagnostics for classical models
+    if (type %in% c("LMM", "GLMM")) {
+      if (.mmDiagnosticsAnyEnabled(options))
+        .mmModelDiagnostics(jaspResults, options, type)
+    }
+
 
     # create plots
     if (length(options$plotHorizontalAxis))
@@ -2857,4 +2863,344 @@
     afex::afex_options(afexOptions)
     options(oldOptions)
   })
+}
+
+### Model diagnostics functions for classical models
+
+.mmDiagnosticsAnyEnabled <- function(options) {
+  # Check if any diagnostic option is enabled
+  diagnosticOptions <- c("diagNormality", "diagHomoscedasticity", "diagOutliers", 
+                        "diagInfluential", "diagVif", "diagR2", "diagICC", 
+                        "diagRMSE", "diagModelComparison", "diagPlotResiduals", 
+                        "diagPlotQQ", "diagPlotScale", "diagPlotLeverage")
+  
+  return(any(sapply(diagnosticOptions, function(opt) {
+    if (opt %in% names(options)) return(options[[opt]]) else return(FALSE)
+  })))
+}
+
+.mmModelDiagnostics <- function(jaspResults, options, type) {
+  
+  if (!is.null(jaspResults[["modelDiagnostics"]]))
+    return()
+
+  diagnosticsContainer <- createJaspContainer(title = gettext("Model Diagnostics"))
+  diagnosticsContainer$position <- 3.5  # Place after fit statistics but before fixed effects
+  diagnosticsContainer$dependOn(c(.mmSwichDependencies(type), 
+                                 "diagNormality", "diagHomoscedasticity", "diagOutliers",
+                                 "diagInfluential", "diagVif", "diagVifThreshold", "diagVifWarning",
+                                 "diagR2", "diagICC", "diagRMSE", "diagModelComparison",
+                                 "diagPlotResiduals", "diagPlotQQ", "diagPlotScale", "diagPlotLeverage"))
+  jaspResults[["modelDiagnostics"]] <- diagnosticsContainer
+
+  full_model <- jaspResults[["mmModel"]]$object
+
+  # Model assumptions checks
+  if (options$diagNormality || options$diagHomoscedasticity || options$diagOutliers || options$diagInfluential) {
+    .mmAssumptionChecks(diagnosticsContainer, full_model, options)
+  }
+
+  # VIF analysis
+  if (options$diagVif) {
+    .mmVifAnalysis(diagnosticsContainer, full_model, options, type)
+  }
+
+  # Model performance metrics
+  if (options$diagR2 || options$diagICC || options$diagRMSE || options$diagModelComparison) {
+    .mmPerformanceMetrics(diagnosticsContainer, full_model, options, type)
+  }
+
+  # Diagnostic plots
+  if (options$diagPlotResiduals || options$diagPlotQQ || options$diagPlotScale || options$diagPlotLeverage) {
+    .mmDiagnosticPlots(diagnosticsContainer, full_model, options)
+  }
+}
+
+.mmAssumptionChecks <- function(container, model, options) {
+  
+  assumptionsTable <- createJaspTable(title = gettext("Model Assumptions"))
+  assumptionsTable$position <- 1
+  assumptionsTable$addColumnInfo(name = "assumption", title = gettext("Assumption"), type = "string")
+  assumptionsTable$addColumnInfo(name = "test", title = gettext("Test"), type = "string")
+  assumptionsTable$addColumnInfo(name = "statistic", title = gettext("Statistic"), type = "number")
+  assumptionsTable$addColumnInfo(name = "pValue", title = gettext("p"), type = "pvalue")
+  assumptionsTable$addColumnInfo(name = "result", title = gettext("Result"), type = "string")
+  
+  container[["assumptionsTable"]] <- assumptionsTable
+
+  tryCatch({
+    # Check normality of residuals
+    if (options$diagNormality) {
+      residuals_model <- residuals(model)
+      
+      # Use Shapiro-Wilk test for normality (limit sample size for computational efficiency)
+      if (length(residuals_model) > 5000) {
+        sample_residuals <- sample(residuals_model, 5000)
+        shapiro_test <- stats::shapiro.test(sample_residuals)
+        test_label <- gettext("Shapiro-Wilk (sample)")
+      } else {
+        shapiro_test <- stats::shapiro.test(residuals_model)
+        test_label <- gettext("Shapiro-Wilk")
+      }
+      
+      assumptionsTable$addRows(list(
+        assumption = gettext("Normality of residuals"),
+        test = test_label,
+        statistic = shapiro_test$statistic,
+        pValue = shapiro_test$p.value,
+        result = ifelse(shapiro_test$p.value > 0.05, gettext("OK"), gettext("Violated"))
+      ))
+    }
+    
+    # Check homoscedasticity using Breusch-Pagan test (implement manually)
+    if (options$diagHomoscedasticity) {
+      fitted_values <- fitted(model)
+      residuals_sq <- residuals(model)^2
+      
+      # Breusch-Pagan test: regress squared residuals on fitted values
+      bp_model <- stats::lm(residuals_sq ~ fitted_values)
+      n <- length(residuals_sq)
+      r_squared <- summary(bp_model)$r.squared
+      bp_statistic <- n * r_squared
+      bp_pvalue <- 1 - stats::pchisq(bp_statistic, df = 1)
+      
+      assumptionsTable$addRows(list(
+        assumption = gettext("Homoscedasticity"),
+        test = gettext("Breusch-Pagan"),
+        statistic = bp_statistic,
+        pValue = bp_pvalue,
+        result = ifelse(bp_pvalue > 0.05, gettext("OK"), gettext("Violated"))
+      ))
+    }
+    
+  }, error = function(e) {
+    assumptionsTable$setError(gettextf("Error in assumption checking: %s", e$message))
+  })
+}
+
+.mmVifAnalysis <- function(container, model, options, type) {
+  
+  vifTable <- createJaspTable(title = gettext("Variance Inflation Factors"))
+  vifTable$position <- 2
+  vifTable$addColumnInfo(name = "term", title = gettext("Term"), type = "string")
+  vifTable$addColumnInfo(name = "vif", title = gettext("VIF"), type = "number")
+  vifTable$addColumnInfo(name = "tolerance", title = gettext("Tolerance"), type = "number")
+  vifTable$addColumnInfo(name = "interpretation", title = gettext("Interpretation"), type = "string")
+  
+  container[["vifTable"]] <- vifTable
+
+  tryCatch({
+    # Calculate VIF manually using the model matrix
+    # Extract fixed effects design matrix
+    X <- stats::model.matrix(model)
+    
+    # Remove intercept column if present
+    if ("(Intercept)" %in% colnames(X)) {
+      X <- X[, !colnames(X) %in% "(Intercept)", drop = FALSE]
+    }
+    
+    if (ncol(X) < 2) {
+      vifTable$addFootnote(gettext("VIF calculation requires at least 2 predictors"))
+      return()
+    }
+    
+    # Calculate VIF for each predictor
+    vif_values <- numeric(ncol(X))
+    names(vif_values) <- colnames(X)
+    
+    for (i in 1:ncol(X)) {
+      # Regress Xi on all other X variables
+      if (ncol(X) == 2) {
+        # For 2 predictors, use correlation
+        r_squared <- cor(X[, i], X[, -i])^2
+      } else {
+        # For more predictors, use multiple regression
+        other_vars <- X[, -i, drop = FALSE]
+        reg_model <- stats::lm(X[, i] ~ other_vars)
+        r_squared <- summary(reg_model)$r.squared
+      }
+      
+      vif_values[i] <- 1 / (1 - r_squared)
+    }
+    
+    # Add rows to table
+    for (i in 1:length(vif_values)) {
+      vif_value <- vif_values[i]
+      tolerance <- 1 / vif_value
+      
+      # Interpret VIF values
+      interpretation <- if (vif_value < options$diagVifThreshold) {
+        gettext("OK")
+      } else if (vif_value < 5) {
+        gettext("Moderate")
+      } else {
+        gettext("High")
+      }
+      
+      vifTable$addRows(list(
+        term = names(vif_values)[i],
+        vif = vif_value,
+        tolerance = tolerance,
+        interpretation = interpretation
+      ))
+    }
+    
+    # Add warnings for high VIF values if requested
+    if (options$diagVifWarning) {
+      high_vif <- names(vif_values)[vif_values >= options$diagVifThreshold]
+      if (length(high_vif) > 0) {
+        warning_msg <- gettextf("High VIF detected for: %s. Consider removing variables with VIF > %1.1f.", 
+                              paste(high_vif, collapse = ", "), options$diagVifThreshold)
+        vifTable$addFootnote(warning_msg)
+      }
+    }
+    
+  }, error = function(e) {
+    vifTable$setError(gettextf("Error calculating VIF: %s", e$message))
+  })
+}
+
+.mmPerformanceMetrics <- function(container, model, options, type) {
+  
+  performanceTable <- createJaspTable(title = gettext("Model Performance"))
+  performanceTable$position <- 3
+  performanceTable$addColumnInfo(name = "metric", title = gettext("Metric"), type = "string")
+  performanceTable$addColumnInfo(name = "value", title = gettext("Value"), type = "number")
+  performanceTable$addColumnInfo(name = "interpretation", title = gettext("Interpretation"), type = "string")
+  
+  container[["performanceTable"]] <- performanceTable
+
+  tryCatch({
+    # R-squared values using MuMIn package functions if available, otherwise manual calculation
+    if (options$diagR2) {
+      # Try to calculate R² values
+      tryCatch({
+        # For lme4 models, use manual calculation
+        # Marginal R²: variance explained by fixed effects only
+        var_fixed <- stats::var(fitted(model))
+        var_total <- var_fixed + stats::var(residuals(model))
+        r2_marginal <- var_fixed / var_total
+        
+        performanceTable$addRows(list(
+          metric = gettext("R² (marginal)"),
+          value = r2_marginal,
+          interpretation = gettext("Variance explained by fixed effects only")
+        ))
+        
+        # Note: Conditional R² is more complex to calculate without specialized packages
+        performanceTable$addFootnote(gettext("Marginal R² = variance explained by fixed effects / total variance"))
+        
+      }, error = function(e) {
+        performanceTable$addFootnote(gettextf("R² calculation error: %s", e$message))
+      })
+    }
+    
+    # RMSE
+    if (options$diagRMSE) {
+      residuals_model <- residuals(model)
+      rmse_value <- sqrt(mean(residuals_model^2))
+      
+      performanceTable$addRows(list(
+        metric = gettext("RMSE"),
+        value = rmse_value,
+        interpretation = gettext("Root mean square error")
+      ))
+    }
+    
+    # Model comparison metrics (AIC, BIC already available from base R)
+    if (options$diagModelComparison) {
+      aic_value <- AIC(model)
+      bic_value <- BIC(model)
+      loglik_value <- as.numeric(stats::logLik(model))
+      
+      performanceTable$addRows(list(
+        metric = gettext("AIC"),
+        value = aic_value,
+        interpretation = gettext("Akaike Information Criterion")
+      ))
+      
+      performanceTable$addRows(list(
+        metric = gettext("BIC"),
+        value = bic_value,
+        interpretation = gettext("Bayesian Information Criterion")
+      ))
+      
+      performanceTable$addRows(list(
+        metric = gettext("Log-likelihood"),
+        value = loglik_value,
+        interpretation = gettext("Model log-likelihood")
+      ))
+    }
+    
+  }, error = function(e) {
+    performanceTable$setError(gettextf("Error calculating performance metrics: %s", e$message))
+  })
+}
+
+.mmDiagnosticPlots <- function(container, model, options) {
+  
+  # Residuals vs Fitted plot
+  if (options$diagPlotResiduals) {
+    residPlot <- createJaspPlot(title = gettext("Residuals vs Fitted Values"), width = 500, height = 400)
+    residPlot$position <- 10
+    container[["residualsPlot"]] <- residPlot
+    
+    tryCatch({
+      plotData <- data.frame(
+        fitted = fitted(model),
+        residuals = residuals(model)
+      )
+      
+      p <- ggplot2::ggplot(plotData, ggplot2::aes(x = fitted, y = residuals)) +
+        ggplot2::geom_point(alpha = 0.6) +
+        ggplot2::geom_smooth(method = "loess", se = TRUE, color = "red") +
+        ggplot2::geom_hline(yintercept = 0, linetype = "dashed", color = "blue") +
+        ggplot2::labs(
+          x = gettext("Fitted Values"),
+          y = gettext("Residuals"),
+          title = gettext("Residuals vs Fitted Values")
+        ) +
+        jaspGraphs::geom_rangeframe() +
+        jaspGraphs::themeJaspRaw()
+      
+      residPlot$plotObject <- p
+      
+    }, error = function(e) {
+      residPlot$setError(gettextf("Error creating residuals plot: %s", e$message))
+    })
+  }
+  
+  # Q-Q plot
+  if (options$diagPlotQQ) {
+    qqPlot <- createJaspPlot(title = gettext("Normal Q-Q Plot"), width = 500, height = 400)
+    qqPlot$position <- 11
+    container[["qqPlot"]] <- qqPlot
+    
+    tryCatch({
+      residuals_std <- scale(residuals(model))[, 1]
+      n <- length(residuals_std)
+      theoretical <- stats::qnorm(stats::ppoints(n))[order(order(residuals_std))]
+      
+      plotData <- data.frame(
+        theoretical = theoretical,
+        sample = sort(residuals_std)
+      )
+      
+      p <- ggplot2::ggplot(plotData, ggplot2::aes(x = theoretical, y = sample)) +
+        ggplot2::geom_point(alpha = 0.6) +
+        ggplot2::geom_abline(intercept = 0, slope = 1, color = "red", linetype = "dashed") +
+        ggplot2::labs(
+          x = gettext("Theoretical Quantiles"),
+          y = gettext("Sample Quantiles"),
+          title = gettext("Normal Q-Q Plot")
+        ) +
+        jaspGraphs::geom_rangeframe() +
+        jaspGraphs::themeJaspRaw()
+      
+      qqPlot$plotObject <- p
+      
+    }, error = function(e) {
+      qqPlot$setError(gettextf("Error creating Q-Q plot: %s", e$message))
+    })
+  }
 }

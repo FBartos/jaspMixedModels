@@ -211,6 +211,8 @@ Form {
 
 	MM.MixedModelsPlots {}
 
+	MM.MixedModelsDiagnostics {}
+
 	Section
 	{
 		title:		qsTr("Estimated marginal means")
