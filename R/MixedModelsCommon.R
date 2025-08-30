@@ -38,7 +38,7 @@
   if (type %in% c("BLMM", "BGLMM")).mmSummaryStanova(jaspResults, dataset, options, type)
 
 
-  if (!is.null(jaspResults[["mmModel"]]) && !jaspResults[[ifelse(type %in% c("LMM", "GLMM"), "ANOVAsummary", "STANOVAsummary")]]$getError()) {
+  if (!is.null(jaspResults[["mmModel"]]) && !jaspBase::isTryError(jaspResults[["mmModel"]]$object$model)) {
 
 
     # show fit statistics
@@ -2574,7 +2574,7 @@
   jaspResults[["classicalDiagnosticPlots"]] <- classicalDiagnosticPlots
 
   # check if model exists
-  if (is.null(jaspResults[["mmModel"]]) || jaspResults[["mmModel"]]$getError()) {
+  if (is.null(jaspResults[["mmModel"]]) || jaspBase::isTryError(jaspResults[["mmModel"]]$object$model)) {
     classicalDiagnosticPlots[["emptyPlot"]] <- createJaspPlot()
     return()
   }

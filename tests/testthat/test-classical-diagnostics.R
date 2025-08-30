@@ -2,14 +2,16 @@
 context("Classical Mixed Models Diagnostics")
 
 test_that("LMM Diagnostics - Predicted vs Residuals", {
-  options <- list(
-    dependent = "rt",
-    fixedEffects = "stimulus", 
-    fixedVariables = "stimulus",
-    randomEffects = "(1|id)",
-    randomVariables = "id",
-    diagnosticsPredictedVsResiduals = TRUE
-  )
+  options <- jaspTools::analysisOptions("MixedModelsLMM")
+  options$dependent <- "rt"
+  options$fixedEffects <- list(list(components = "stimulus"))
+  options$fixedVariables <- "stimulus"
+  
+  randomComponents <- list(list(randomSlopes = TRUE, value = "Intercept"))
+  options$randomEffects <- list(list(correlations = TRUE, randomComponents = randomComponents, value = "id"))
+  options$randomVariables <- "id"
+  
+  options$diagnosticsPredictedVsResiduals <- TRUE
   
   results <- jaspTools::runAnalysis("MixedModelsLMM", "LMM.csv", options)
   
@@ -22,17 +24,19 @@ test_that("LMM Diagnostics - Predicted vs Residuals", {
 })
 
 test_that("LMM Diagnostics - Multiple plots", {
-  options <- list(
-    dependent = "rt",
-    fixedEffects = "stimulus",
-    fixedVariables = "stimulus", 
-    randomEffects = "(1|id)",
-    randomVariables = "id",
-    diagnosticsPredictedVsResiduals = TRUE,
-    diagnosticsHistogramResiduals = TRUE,
-    diagnosticsQQResiduals = TRUE,
-    diagnosticsResidualsVsPredictors = TRUE
-  )
+  options <- jaspTools::analysisOptions("MixedModelsLMM")
+  options$dependent <- "rt"
+  options$fixedEffects <- list(list(components = "stimulus"))
+  options$fixedVariables <- "stimulus"
+  
+  randomComponents <- list(list(randomSlopes = TRUE, value = "Intercept"))
+  options$randomEffects <- list(list(correlations = TRUE, randomComponents = randomComponents, value = "id"))
+  options$randomVariables <- "id"
+  
+  options$diagnosticsPredictedVsResiduals <- TRUE
+  options$diagnosticsHistogramResiduals <- TRUE
+  options$diagnosticsQQResiduals <- TRUE
+  options$diagnosticsResidualsVsPredictors <- TRUE
   
   results <- jaspTools::runAnalysis("MixedModelsLMM", "LMM.csv", options)
   
@@ -49,16 +53,18 @@ test_that("LMM Diagnostics - Multiple plots", {
 })
 
 test_that("GLMM Diagnostics work", {
-  options <- list(
-    dependent = "rt",
-    fixedEffects = "stimulus",
-    fixedVariables = "stimulus",
-    randomEffects = "(1|id)",
-    randomVariables = "id",
-    family = "gaussian",
-    link = "identity",
-    diagnosticsPredictedVsResiduals = TRUE
-  )
+  options <- jaspTools::analysisOptions("MixedModelsGLMM")
+  options$dependent <- "rt"
+  options$fixedEffects <- list(list(components = "stimulus"))
+  options$fixedVariables <- "stimulus"
+  
+  randomComponents <- list(list(randomSlopes = TRUE, value = "Intercept"))
+  options$randomEffects <- list(list(correlations = TRUE, randomComponents = randomComponents, value = "id"))
+  options$randomVariables <- "id"
+  
+  options$family <- "gaussian"
+  options$link <- "identity"
+  options$diagnosticsPredictedVsResiduals <- TRUE
   
   results <- jaspTools::runAnalysis("MixedModelsGLMM", "LMM.csv", options)
   
@@ -70,13 +76,14 @@ test_that("GLMM Diagnostics work", {
 })
 
 test_that("Diagnostics are not created when no options are selected", {
-  options <- list(
-    dependent = "rt",
-    fixedEffects = "stimulus",
-    fixedVariables = "stimulus",
-    randomEffects = "(1|id)", 
-    randomVariables = "id"
-  )
+  options <- jaspTools::analysisOptions("MixedModelsLMM")
+  options$dependent <- "rt"
+  options$fixedEffects <- list(list(components = "stimulus"))
+  options$fixedVariables <- "stimulus"
+  
+  randomComponents <- list(list(randomSlopes = TRUE, value = "Intercept"))
+  options$randomEffects <- list(list(correlations = TRUE, randomComponents = randomComponents, value = "id"))
+  options$randomVariables <- "id"
   
   results <- jaspTools::runAnalysis("MixedModelsLMM", "LMM.csv", options)
   
