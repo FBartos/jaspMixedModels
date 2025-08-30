@@ -6,12 +6,12 @@ This is a JASP module providing Mixed Models Module. It contains QML user-facing
 
 ## Critical Reference Guides
 
-**MANDATORY**: Always consult these comprehensive guides located in `.github/` for detailed development work:
+**MANDATORY**: Always consult these comprehensive guides located in `docs/` for detailed development work:
 
-- **[jasp-qml-guide.md](.github/jasp-qml-guide.md)** - Complete QML component reference (1000+ lines covering all components, properties, layout, connections)
-- **[jasp-human-guide.md](.github/jasp-human-guide.md)** - Essential user experience guidelines (error messages, internationalization, input validation)  
-- **[r-analyses-guide.md](.github/r-analyses-guide.md)** - Comprehensive R analysis development guide (step-by-step process, error checking, tables/plots/text)
-- **[r-style-guide.md](.github/r-style-guide.md)** - R coding standards and style requirements
+- **[jasp-qml-guide.md](docs/jasp-qml-guide.md)** - Complete QML component reference (1000+ lines covering all components, properties, layout, connections)
+- **[jasp-human-guide.md](docs/jasp-human-guide.md)** - Essential user experience guidelines (error messages, internationalization, input validation)  
+- **[r-analyses-guide.md](docs/r-analyses-guide.md)** - Comprehensive R analysis development guide (step-by-step process, error checking, tables/plots/text)
+- **[r-style-guide.md](docs/r-style-guide.md)** - R coding standards and style requirements
 
 These are the authoritative references for all detailed development work. Use them extensively.
 
@@ -42,6 +42,7 @@ These are the authoritative references for all detailed development work. Use th
 ├── .github/workflows/        # CI/CD automation
 ├── DESCRIPTION               # R package metadata
 ├── renv.lock                # R dependency lockfile
+├── docs/                     # Documentation files
 └── jaspSummaryStatistics.Rproj  # RStudio project
 ```
 
@@ -73,7 +74,7 @@ Since this module runs within JASP desktop application, manual testing requires:
 ### QML Interface Rules
 - QML interfaces in `inst/qml/` define user-facing options passed to R functions
 - Each analysis links: `inst/Descriptions/` → `inst/qml/` → `R/` functions
-- **CRITICAL**: Always reference [jasp-qml-guide.md](.github/jasp-qml-guide.md) for complete component documentation
+- **CRITICAL**: Always reference [jasp-qml-guide.md](docs/jasp-qml-guide.md) for complete component documentation
 - QML elements use `name` (camelCase internal) and `title`/`label` (user-facing)
 - Document QML elements using `info` property for help generation
 - Use existing QML files as examples for structure and style
@@ -81,8 +82,8 @@ Since this module runs within JASP desktop application, manual testing requires:
 
 ### R Backend Rules  
 - R functions in `R/` directory called by analyses in `inst/Descriptions/`
-- **CRITICAL**: Follow [r-style-guide.md](.github/r-style-guide.md) for all coding standards
-- **CRITICAL**: Use [r-analyses-guide.md](.github/r-analyses-guide.md) for step-by-step development process
+- **CRITICAL**: Follow [r-style-guide.md](docs/r-style-guide.md) for all coding standards
+- **CRITICAL**: Use [r-analyses-guide.md](docs/r-analyses-guide.md) for step-by-step development process
 - Use camelCase for all function and variable names
 - NEVER use `library()` or `require()` - use `package::function()` syntax
 - Avoid new dependencies - re-implement simple functions instead
@@ -92,7 +93,7 @@ Since this module runs within JASP desktop application, manual testing requires:
 ### Input Validation and Error Handling
 - **TARGETED VALIDATION ONLY**: Since `options` are validated in the GUI, R functions should NOT check user input validity except for specific cases
 - **VALIDATE ONLY**: `dataset` object (data.frame from GUI), `TextField` options, and `FormulaField` options (arbitrary text input)
-- **CRITICAL**: Reference [jasp-human-guide.md](.github/jasp-human-guide.md) for user-friendly error messages
+- **CRITICAL**: Reference [jasp-human-guide.md](docs/jasp-human-guide.md) for user-friendly error messages
 - Use `gettext()` and `gettextf()` for all user-visible messages (internationalization)
 - For `dataset` validation, check: missing values, infinity, negative values, insufficient observations, factor levels, variance
 - Example: `.hasErrors(dataset, type = c('observations', 'variance', 'infinity'), all.target = options$variables, observations.amount = '< 3', exitAnalysisIfErrors = TRUE)`
@@ -124,18 +125,18 @@ Since this module runs within JASP desktop application, manual testing requires:
 ## Common Tasks
 
 ### Adding New Analysis
-1. **MANDATORY**: Follow complete process in [r-analyses-guide.md](.github/r-analyses-guide.md)
+1. **MANDATORY**: Follow complete process in [r-analyses-guide.md](docs/r-analyses-guide.md)
 2. Create R function in `R/` directory following camelCase naming
-3. Add QML interface in `inst/qml/` (reference [jasp-qml-guide.md](.github/jasp-qml-guide.md))  
+3. Add QML interface in `inst/qml/` (reference [jasp-qml-guide.md](docs/jasp-qml-guide.md))
 4. Define analysis in `inst/Description.qml`
 5. Create help file in `inst/help/`
 6. Add unit tests in `tests/testthat/`
 7. Run `jaspTools::testAll()` to validate (70+ seconds, NEVER CANCEL)
 
 ### Modifying Existing Analysis
-1. **MANDATORY**: Follow [r-analyses-guide.md](.github/r-analyses-guide.md) for proper structure
+1. **MANDATORY**: Follow [r-analyses-guide.md](docs/r-analyses-guide.md) for proper structure
 2. Update R function maintaining existing interface
-3. Update QML if adding/changing options (see [jasp-qml-guide.md](.github/jasp-qml-guide.md))
+3. Update QML if adding/changing options (see [jasp-qml-guide.md](docs/jasp-qml-guide.md))
 4. Update help documentation
 5. Update unit tests and expected results
 6. Add upgrade mapping to `inst/Upgrades.qml` if renaming options
@@ -158,10 +159,10 @@ Since this module runs within JASP desktop application, manual testing requires:
 - R 4.5+ required
 
 ## Validation Checklist
-- [ ] **MANDATORY**: Referenced [jasp-qml-guide.md](.github/jasp-qml-guide.md) for QML components
-- [ ] **MANDATORY**: Referenced [r-analyses-guide.md](.github/r-analyses-guide.md) for R development  
-- [ ] **MANDATORY**: Referenced [jasp-human-guide.md](.github/jasp-human-guide.md) for user experience
-- [ ] **MANDATORY**: Followed [r-style-guide.md](.github/r-style-guide.md) for coding standards
+- [ ] **MANDATORY**: Referenced [jasp-qml-guide.md](docs/jasp-qml-guide.md) for QML components
+- [ ] **MANDATORY**: Referenced [r-analyses-guide.md](docs/r-analyses-guide.md) for R development
+- [ ] **MANDATORY**: Referenced [jasp-human-guide.md](docs/jasp-human-guide.md) for user experience
+- [ ] **MANDATORY**: Followed [r-style-guide.md](docs/r-style-guide.md) for coding standards
 - [ ] Run `jaspTools::testAll()` - wait full 70+ seconds, all 113 tests pass
 - [ ] Check test output for new failures (ignore deprecation warnings)  
 - [ ] Verify help files updated for interface changes
