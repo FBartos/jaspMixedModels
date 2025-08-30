@@ -69,6 +69,8 @@ Form {
 
 	MM.MixedModelsPlots {}
 
+	MM.MixedModelsClassicalDiagnostics {}
+
 	Section
 	{
 		title:		qsTr("Estimated marginal means")
