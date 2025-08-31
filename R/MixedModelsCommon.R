@@ -21,6 +21,17 @@
 
 .mmRunAnalysis   <- function(jaspResults, dataset, options, type) {
 
+  # Set default values for commonly missing options
+  if (is.null(options$type) || length(options$type) == 0) options$type <- 3
+  if (is.null(options$factorContrast) || length(options$factorContrast) == 0) options$factorContrast <- "sum"
+  if (is.null(options$modelSummary)) options$modelSummary <- TRUE
+  if (is.null(options$fixedEffectEstimate)) options$fixedEffectEstimate <- FALSE
+  if (is.null(options$varianceCorrelationEstimate)) options$varianceCorrelationEstimate <- FALSE  
+  if (is.null(options$randomEffectEstimate)) options$randomEffectEstimate <- FALSE
+  if (is.null(options$interceptTest)) options$interceptTest <- FALSE
+  if (is.null(options$bootstrapSamples)) options$bootstrapSamples <- 500
+  if (is.null(options$vovkSellke)) options$vovkSellke <- FALSE
+
   .setOptions()
 
   if (.mmReady(options, type))
@@ -38,7 +49,9 @@
   if (type %in% c("BLMM", "BGLMM")).mmSummaryStanova(jaspResults, dataset, options, type)
 
 
-  if (!is.null(jaspResults[["mmModel"]]) && !jaspBase::isTryError(jaspResults[["mmModel"]]$object$model)) {
+  # Check if model exists and the summary tables are ready (no errors)
+  summaryTable <- if (type %in% c("LMM", "GLMM")) "ANOVAsummary" else "STANOVAsummary"
+  if (!is.null(jaspResults[["mmModel"]]) && !is.null(jaspResults[[summaryTable]])) {
 
 
     # show fit statistics
@@ -485,6 +498,16 @@
   if (!is.null(jaspResults[["mmModel"]]))
     return()
 
+  # Set default testMethod if not provided
+  if (is.null(options$testMethod) || length(options$testMethod) == 0) {
+    options$testMethod <- if (type %in% c("LMM", "GLMM")) "satterthwaite" else "likelihoodRatioTest"
+  }
+
+  # Set default includeIntercept if not provided
+  if (is.null(options$includeIntercept) || length(options$includeIntercept) == 0) {
+    options$includeIntercept <- TRUE
+  }
+
   mmModel <- createJaspState()
   #maybe you should define some columns here
   jaspResults[["mmModel"]] <- mmModel
@@ -601,6 +624,11 @@
 
   if (!is.null(jaspResults[["ANOVAsummary"]]))
     return()
+
+  # Set default testMethod if not provided
+  if (is.null(options$testMethod) || length(options$testMethod) == 0) {
+    options$testMethod <- if (type %in% c("LMM", "GLMM")) "satterthwaite" else "likelihoodRatioTest"
+  }
 
   model <- jaspResults[["mmModel"]]$object$model
 
@@ -2565,6 +2593,12 @@
   if (!is.null(jaspResults[["classicalDiagnosticPlots"]]))
     return()
 
+  # Set default values for missing options
+  if (is.null(options$diagnosticsPredictedVsResiduals)) options$diagnosticsPredictedVsResiduals <- FALSE
+  if (is.null(options$diagnosticsResidualsVsPredictors)) options$diagnosticsResidualsVsPredictors <- FALSE  
+  if (is.null(options$diagnosticsHistogramResiduals)) options$diagnosticsHistogramResiduals <- FALSE
+  if (is.null(options$diagnosticsQQResiduals)) options$diagnosticsQQResiduals <- FALSE
+
   classicalDiagnosticPlots <- createJaspContainer(title = gettext("Model diagnostics"))
   classicalDiagnosticPlots$position <- 6.5
   classicalDiagnosticPlots$dependOn(c("diagnosticsPredictedVsResiduals", 
@@ -2573,13 +2607,16 @@
                                      "diagnosticsQQResiduals"))
   jaspResults[["classicalDiagnosticPlots"]] <- classicalDiagnosticPlots
 
-  # check if model exists
-  if (is.null(jaspResults[["mmModel"]]) || jaspBase::isTryError(jaspResults[["mmModel"]]$object$model)) {
+  # check if model exists - be more flexible about model access
+  model <- NULL
+  if (!is.null(jaspResults[["mmModel"]]) && !is.null(jaspResults[["mmModel"]]$object)) {
+    model <- jaspResults[["mmModel"]]$object$model
+  }
+  
+  if (is.null(model) || jaspBase::isTryError(model)) {
     classicalDiagnosticPlots[["emptyPlot"]] <- createJaspPlot()
     return()
   }
-
-  model <- jaspResults[["mmModel"]]$object$model
 
   # extract model components
   if (type == "GLMM") {
