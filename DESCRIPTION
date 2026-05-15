@@ -1,7 +1,7 @@
 Package: jaspMixedModels
 Type: Package
 Title: Mixed Models Module for JASP
-Version: 0.95.0
+Version: 0.96.4
 Date: 2022-10-05
 Author: JASP Team
 Website: jasp-stats.org
@@ -13,7 +13,6 @@ Imports:
   afex (>= 0.28-0),
   emmeans (>= 1.4.7),
   ggplot2,
-  ggpol,
   jaspBase,
   jaspGraphs,
   lme4,
@@ -27,3 +26,4 @@ Remotes:
   jasp-stats/jaspBase,
   jasp-stats/jaspGraphs,
   bayesstuff/stanova
+RoxygenNote: 7.3.2

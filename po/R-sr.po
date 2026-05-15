@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspMixedModels 0.19.2\n"
-"POT-Creation-Date: 2025-05-31 03:08\n"
-"PO-Revision-Date: 2025-04-24 23:01+0000\n"
+"POT-Creation-Date: 2026-02-28 03:23\n"
+"PO-Revision-Date: 2025-12-17 23:00+0000\n"
 "Last-Translator: Marko Bojović <bojovicmarko@outlook.com>\n"
 "Language-Team: Serbian <https://hosted.weblate.org/projects/jasp/"
 "jaspmixedmodels-r/sr/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.11.1-dev\n"
+"X-Generator: Weblate 5.15.1-dev\n"
 
 msgid ""
 "The categorical fixed effect '%s' must have fewer levels than the overall "
@@ -36,13 +36,10 @@ msgstr ""
 msgid "%s requires that the dependent variable is an integer."
 msgstr ""
 
-msgid "%s requires that the dependent variable contains only 0 and 1."
+msgid "%s requires that the dependent variable contains only two levels."
 msgstr ""
 
 msgid "%s requires that the number of trials variable is an integer."
-msgstr ""
-
-msgid "%s requires that the number or proportion of successes is an integer."
 msgstr ""
 
 msgid ""
@@ -58,12 +55,14 @@ msgid ""
 "of successes out of the number of trials."
 msgstr ""
 
-msgid "%s requires that the dependent variable is continuous."
-msgstr ""
-
 msgid ""
 "At least one random effect needs to be specified for the '%1$s' random "
 "effect grouping factors.%2$s"
+msgstr ""
+
+msgid ""
+"Parametric bootstrap is not supported for %s family. Please use a different "
+"test method (e.g., likelihood ratio test)."
 msgstr ""
 
 msgid ""
@@ -99,7 +98,7 @@ msgid "VS-MPR (bootstrap)"
 msgstr ""
 
 msgid "Warning:"
-msgstr ""
+msgstr "Упозорење:"
 
 msgid "Note:"
 msgstr ""
@@ -108,6 +107,9 @@ msgid "III"
 msgstr ""
 
 msgid "II"
+msgstr ""
+
+msgid "'%1$s' level coded as success."
 msgstr ""
 
 msgid "Fit statistics"
@@ -168,7 +170,7 @@ msgid "Fixed Effects Estimates"
 msgstr ""
 
 msgid "Estimate"
-msgstr ""
+msgstr "Процена"
 
 msgid "SE"
 msgstr ""
@@ -204,13 +206,13 @@ msgid "Mean"
 msgstr "Аритметичка средина"
 
 msgid "Lower"
-msgstr "Ниже"
+msgstr "Нижи"
 
 msgid "%s%% CI"
-msgstr ""
+msgstr "%s%% CI"
 
 msgid "Upper"
-msgstr "Горњи"
+msgstr "Виши"
 
 msgid "Cannot find function: %s"
 msgstr ""
@@ -222,7 +224,7 @@ msgid "Row"
 msgstr ""
 
 msgid "z"
-msgstr ""
+msgstr "z"
 
 msgid "Median"
 msgstr "Медијана"
@@ -255,7 +257,7 @@ msgid "Please, report the following error message at JASP GitHub %s"
 msgstr ""
 
 msgid "Fit Statistics"
-msgstr ""
+msgstr "Статистике усклађености"
 
 msgid "WAIC"
 msgstr ""
@@ -386,10 +388,13 @@ msgstr ""
 msgid "Results are averaged over the levels of: %s."
 msgstr ""
 
+msgid "Bernoulli"
+msgstr ""
+
 msgid "binomial"
 msgstr ""
 
-msgid "gaussian"
+msgid "Gaussian"
 msgstr ""
 
 msgid "gamma"
@@ -422,7 +427,7 @@ msgstr ""
 msgid "parametric bootstrap"
 msgstr ""
 
-msgid "Model terms tested with %s testMethod."
+msgid "Model terms tested with %s method."
 msgstr ""
 
 msgid "P-values are not adjusted."
@@ -528,6 +533,13 @@ msgid ""
 msgstr ""
 
 msgid "The model formula is probably too long. Try shortening variable names."
+msgstr ""
+
+msgid ""
+"The Kenward-Roger degrees of freedom approximation failed because the "
+"variance-covariance matrix is singular. This can happen with overly complex "
+"models or when the model structure does not support this method. Try using "
+"asymptotic degrees of freedom instead."
 msgstr ""
 
 msgid "The following variable is used as a random effects grouping factor: %s."

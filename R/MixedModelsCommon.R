@@ -159,27 +159,27 @@
 
     if (options$family %in% c("gamma", "inverseGaussian")) {
 
-      if (options$dependent.type != "scale" || any(dataset[, options$dependent] <= 0))
+      if (any(dataset[, options$dependent] <= 0))
         .quitAnalysis(gettextf("%s requires that the dependent variable is positive.",familyText))
 
     } else if (options$family %in% c("negativeBinomial", "poisson")) {
 
-      if (options$dependent.type != "scale" || any(dataset[, options$dependent] < 0 | any(!.is.wholenumber(dataset[, options$dependent]))))
+      if (any(dataset[, options$dependent] < 0 | any(!.is.wholenumber(dataset[, options$dependent]))))
         .quitAnalysis(gettextf("%s requires that the dependent variable is an integer.",familyText))
 
     } else if (options$family == "bernoulli") {
 
-      if (!options$dependent.type %in% c("scale", "nominal") || any(!dataset[, options$dependent] %in% c(0, 1)))
-        .quitAnalysis(gettextf("%s requires that the dependent variable contains only 0 and 1.",familyText))
+      if (length(unique(dataset[, options$dependent])) != 2)
+        .quitAnalysis(gettextf("%s requires that the dependent variable contains only two levels.",familyText))
+
+      # transform to 0/1 outcome
+      attr(dataset, "binomialSuccess") <- sort(unique(dataset[[options$dependent]]))[2]
+      dataset[[options$dependent]] <- as.numeric(dataset[[options$dependent]] == attr(dataset, "binomialSuccess"))
 
     } else if (options$family == "binomial") {
 
-      if (options$dependentAggregation.type != "scale" || any(dataset[, options$dependentAggregation] < 0) || any(!.is.wholenumber(dataset[, options$dependentAggregation])))
+      if (any(dataset[, options$dependentAggregation] < 0) || any(!.is.wholenumber(dataset[, options$dependentAggregation])))
         .quitAnalysis(gettextf("%s requires that the number of trials variable is an integer.",familyText))
-
-      # if the user supplies the number of successes, transform them into the corresponding proportion
-      if (options$dependent.type != "scale")
-        .quitAnalysis(gettextf("%s requires that the number or proportion of successes is an integer.",familyText))
 
       if (all(.is.wholenumber(dataset[, options$dependent]))){
         if(any(dataset[, options$dependent] > dataset[, options$dependentAggregation]))
@@ -196,13 +196,8 @@
 
     } else if (options$family == "beta") {
 
-      if (options$dependent.type != "scale" || any(dataset[, options$dependent] <= 0 | dataset[, options$dependent] >= 1))
+      if (any(dataset[, options$dependent] <= 0 | dataset[, options$dependent] >= 1))
         .quitAnalysis(gettextf("%s requires that the dependent variable is higher than 0 and lower than 1.",familyText))
-
-    } else if (options$family == "gaussian") {
-
-      if (options$dependent.type != "scale")
-        .quitAnalysis(gettextf("%s requires that the dependent variable is continuous.",familyText))
 
     }
   }
@@ -478,6 +473,13 @@
   if (!is.null(jaspResults[["mmModel"]]))
     return()
 
+  # Validate parametricBootstrap + non-Gaussian family combination
+  # This combination does not work due to a limitation in the afex package
+  # See: https://github.com/singmann/afex/issues/134
+  if (type == "GLMM" && options[["testMethod"]] == "parametricBootstrap" && options[["family"]] != "gaussian") {
+    .quitAnalysis(gettextf("Parametric bootstrap is not supported for %s family. Please use a different test method (e.g., likelihood ratio test).", options[["family"]]))
+  }
+
   mmModel <- createJaspState()
   #maybe you should define some columns here
   jaspResults[["mmModel"]] <- mmModel
@@ -722,10 +724,11 @@
   for (i in seq_along(addedRe))
     ANOVAsummary$addFootnote(.mmMessageAddedTerms(addedRe[[i]], names(addedRe)[i]), symbol = gettext("Note:"))
 
-
   ANOVAsummary$addFootnote(.mmMessageANOVAtype(ifelse(options$type == 3, gettext("III"), gettext("II"))))
   if (type == "GLMM")
     ANOVAsummary$addFootnote(.mmMessageGLMMtype(options$family, options$link))
+  if (type == "GLMM" && options$family == "bernoulli")
+    ANOVAsummary$addFootnote(gettextf("'%1$s' level coded as success.", attr(dataset, "binomialSuccess")))
 
   ANOVAsummary$addFootnote(.mmMessageTermTest(options$testMethod))
 
@@ -1151,9 +1154,9 @@
     data_arg <- list(width = options$plotElementWidth)
   else if (options$plotBackgroundElement == "count")
     data_arg <- list()
-  else if (options$plotBackgroundElement == "beeswarm")
+  else if (options$plotBackgroundElement == "beeswarm") # disabled due to package loading
     data_arg <- list(dodge.width = options$plotDodge)
-  else if (options$plotBackgroundElement == "boxjitter")
+  else if (options$plotBackgroundElement == "boxjitter") # temporarily disabled due to incompatibility with new ggplot
     data_arg <- list(
       width             = options$plotElementWidth,
       jitter.width      = options$plotJitterWidth,
@@ -1559,20 +1562,6 @@
   else if (type == "GLMM" && options$family == "gaussian" && options$link == "identity")
     trendsDf <<- "asymptotic"
 
-  emm <- emmeans::emtrends(
-    object  = trendsModel,
-    data    = trendsDataset,
-    specs   = unlist(options$trendsVariables),
-    var     = unlist(options$trendsTrendVariable),
-    at      = trendsAt,
-    options = list(level = trendsCI),
-    lmer.df = if (trendsType == "LMM") trendsDf
-  )
-  emmTable  <- as.data.frame(emm)
-  if (type %in% c("LMM", "GLMM") && options$trendsComparison)
-    emmTest <- as.data.frame(emmeans::test(emm, null = options$trendsComparisonWith))
-
-
   trendsSummary <- createJaspTable(title = gettext("Estimated Trends"))
   EMTresults    <- createJaspState()
 
@@ -1604,6 +1593,30 @@
 
   trendsSummary$dependOn(c(dependencies, dependenciesAdd))
   EMTresults$dependOn(c(dependencies, dependenciesAdd))
+
+  # Create table first to allow setting error message
+  jaspResults[["trendsSummary"]] <- trendsSummary
+
+  emm <- try(
+    emmeans::emtrends(
+      object  = trendsModel,
+      data    = trendsDataset,
+      specs   = unlist(options$trendsVariables),
+      var     = unlist(options$trendsTrendVariable),
+      at      = trendsAt,
+      options = list(level = trendsCI),
+      lmer.df = if (trendsType == "LMM") trendsDf
+    )
+  )
+
+  if (jaspBase::isTryError(emm)) {
+    trendsSummary$setError(.mmErrorOnFit(emm))
+    return()
+  }
+
+  emmTable  <- as.data.frame(emm)
+  if (type %in% c("LMM", "GLMM") && options$trendsComparison)
+    emmTest <- as.data.frame(emmeans::test(emm, null = options$trendsComparisonWith))
 
   if (options$trendsContrast)
     trendsSummary$addColumnInfo(name = "number", title = gettext("Row"), type = "integer")
@@ -1896,7 +1909,7 @@
   }
 
   if (jaspBase::isTryError(emmContrast)) {
-    EMMCsummary$setError(emmContrast)
+    EMMCsummary$setError(.mmErrorOnFit(emmContrast))
     return()
   }
 
@@ -2009,7 +2022,7 @@
     if (options$family == "negativeBinomial") {
       glmmFamily <<- rstanarm::neg_binomial_2(link = glmmLink)
     } else if (options$family == "beta") {
-      glmmFamily <<- mgcv::betar(link = glmmLink)
+      glmmFamily <<- do.call(mgcv::betar, list(link = glmmLink))
     } else {
       glmmFamily <<- .mmGetRFamily(options[["family"]])
       glmmFamily <<- eval(call(glmmFamily, glmmLink))
@@ -2472,9 +2485,12 @@
     if (jaspResults[["nMissing"]]$object != 0)
       tempTable$addFootnote(.mmMessageMissingRows(jaspResults[["nMissing"]]$object))
 
-    if (type == "BGLMM")
+    if (type == "BGLMM") {
       tempTable$addFootnote(.mmMessageGLMMtype(options$family, options$link))
 
+      if (options$family == "bernoulli")
+        tempTable$addFootnote(gettextf("'%1$s' level coded as success.", attr(dataset, "binomialSuccess")))
+    }
   }
 
   return()
@@ -2795,7 +2811,6 @@
     "dependent.types",
     "fixedEffects",
     "fixedVariables",
-    "fixedVariables.types",
     "includeIntercept",
     "randomEffects",
     "randomVariables",
@@ -2816,7 +2831,6 @@
     "dependent",
     "dependent.types",
     "fixedEffects",
-    "fixedVariables.types",
     "includeIntercept",
     "randomEffects",
     "randomVariables",

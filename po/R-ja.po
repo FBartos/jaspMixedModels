@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspMixedModels 0.15.0\n"
-"POT-Creation-Date: 2025-05-31 03:08\n"
+"POT-Creation-Date: 2026-02-28 03:23\n"
 "PO-Revision-Date: 2024-07-02 17:09+0000\n"
 "Last-Translator: Daiki Hojo <dhojo.bayes@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/"
@@ -38,14 +38,11 @@ msgstr "%s は、従属変数が正である必要があります。"
 msgid "%s requires that the dependent variable is an integer."
 msgstr "%s は、従属変数が整数である必要があります。"
 
-msgid "%s requires that the dependent variable contains only 0 and 1."
+#, fuzzy
+msgid "%s requires that the dependent variable contains only two levels."
 msgstr "%s は、従属変数に含まれる数字が0と1だけである必要があります。"
 
 msgid "%s requires that the number of trials variable is an integer."
-msgstr "%s は試行回数の変数が整数である必要があります。"
-
-#, fuzzy
-msgid "%s requires that the number or proportion of successes is an integer."
 msgstr "%s は試行回数の変数が整数である必要があります。"
 
 msgid ""
@@ -62,16 +59,17 @@ msgid ""
 msgstr ""
 "%s は、従属変数が試行回数のうち成功した回数か割合であることを必要とします."
 
-#, fuzzy
-msgid "%s requires that the dependent variable is continuous."
-msgstr "%s は、従属変数が正である必要があります。"
-
 msgid ""
 "At least one random effect needs to be specified for the '%1$s' random "
 "effect grouping factors.%2$s"
 msgstr ""
 "'%1$s' の変量効果群要因には、少なくとも 1 つの変量効果を指定する必要がありま"
 "す. %2$s"
+
+msgid ""
+"Parametric bootstrap is not supported for %s family. Please use a different "
+"test method (e.g., likelihood ratio test)."
+msgstr ""
 
 msgid ""
 "Mixed-effects models with a fixed intercept only are not supported for "
@@ -118,6 +116,9 @@ msgstr "III"
 
 msgid "II"
 msgstr "II"
+
+msgid "'%1$s' level coded as success."
+msgstr ""
 
 msgid "Fit statistics"
 msgstr "適合統計量"
@@ -441,10 +442,14 @@ msgstr "P値は、%sに対する帰無仮説の検定に対応しています。
 msgid "Results are averaged over the levels of: %s."
 msgstr "結果は次の水準で平均化されています: %s."
 
+msgid "Bernoulli"
+msgstr ""
+
 msgid "binomial"
 msgstr "二項"
 
-msgid "gaussian"
+#, fuzzy
+msgid "Gaussian"
 msgstr "正規"
 
 msgid "gamma"
@@ -477,7 +482,8 @@ msgstr "尤度比検定"
 msgid "parametric bootstrap"
 msgstr "パラメトリックブートストラップ"
 
-msgid "Model terms tested with %s testMethod."
+#, fuzzy
+msgid "Model terms tested with %s method."
 msgstr "モデル項は %s 検定法で検証されます."
 
 msgid "P-values are not adjusted."
@@ -614,6 +620,13 @@ msgstr ""
 msgid "The model formula is probably too long. Try shortening variable names."
 msgstr "モデル式が長すぎるかもしれません. 変数名を短くしてみてください."
 
+msgid ""
+"The Kenward-Roger degrees of freedom approximation failed because the "
+"variance-covariance matrix is singular. This can happen with overly complex "
+"models or when the model structure does not support this method. Try using "
+"asymptotic degrees of freedom instead."
+msgstr ""
+
 msgid "The following variable is used as a random effects grouping factor: %s."
 msgid_plural ""
 "The following variables are used as random effects grouping factors: %s."
@@ -719,6 +732,15 @@ msgid_plural ""
 msgstr[0] ""
 "LOO 推定値の信頼性は低いです -- 一般化されたパレート分布の形状パラメータ (k) "
 "が 0.5 より大きい観測が %1.0f 個ありました。"
+
+#, fuzzy
+#~ msgid ""
+#~ "%s requires that the number or proportion of successes is an integer."
+#~ msgstr "%s は試行回数の変数が整数である必要があります。"
+
+#, fuzzy
+#~ msgid "%s requires that the dependent variable is continuous."
+#~ msgstr "%s は、従属変数が正である必要があります。"
 
 #~ msgid "Intercept"
 #~ msgstr "切片"

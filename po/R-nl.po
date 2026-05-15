@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspMixedModels 0.15.0\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2025-05-31 03:08\n"
+"POT-Creation-Date: 2026-02-28 03:23\n"
 "PO-Revision-Date: 2025-05-03 03:04+0000\n"
 "Last-Translator: Koen Derks <koen-derks@hotmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/"
@@ -40,14 +40,12 @@ msgstr "%s vereist dat de afhankelijke variabele positief is."
 msgid "%s requires that the dependent variable is an integer."
 msgstr "%s vereist dat de afhankelijke variabele een geheel getal is."
 
-msgid "%s requires that the dependent variable contains only 0 and 1."
+#, fuzzy
+msgid "%s requires that the dependent variable contains only two levels."
 msgstr "%s vereist dat de afhankelijke variabele slechts 0 en 1 kan zijn."
 
 msgid "%s requires that the number of trials variable is an integer."
 msgstr "%s vereist dat de steekproefgrootte variabele een geheel getal is."
-
-msgid "%s requires that the number or proportion of successes is an integer."
-msgstr "%s vereist dat het aantal of aandeel successen een geheel getal is."
 
 msgid ""
 "%s requires that the number of successes is lower that the number of trials."
@@ -66,15 +64,17 @@ msgstr ""
 "%s vereist dat de afhankelijke variabele het aantal of het aandeel van de "
 "successen in de steekproefgrootte representeert."
 
-msgid "%s requires that the dependent variable is continuous."
-msgstr "%s vereist dat de afhankelijke variabele continu is."
-
 msgid ""
 "At least one random effect needs to be specified for the '%1$s' random "
 "effect grouping factors.%2$s"
 msgstr ""
 "Er moet ten minste één willekeurig effect worden opgegeven voor de \"%1$s\" "
 "willekeurige effectgroeperingsfactoren.%2$s"
+
+msgid ""
+"Parametric bootstrap is not supported for %s family. Please use a different "
+"test method (e.g., likelihood ratio test)."
+msgstr ""
 
 msgid ""
 "Mixed-effects models with a fixed intercept only are not supported for "
@@ -121,6 +121,9 @@ msgstr "III"
 
 msgid "II"
 msgstr "II"
+
+msgid "'%1$s' level coded as success."
+msgstr ""
 
 msgid "Fit statistics"
 msgstr "Pasmaten"
@@ -446,10 +449,14 @@ msgstr "P-waarden komen overeen met de toetsing van de nulhypothese tegen %s."
 msgid "Results are averaged over the levels of: %s."
 msgstr "Resultaten zijn gemiddeld over de levels van: %s."
 
+msgid "Bernoulli"
+msgstr ""
+
 msgid "binomial"
 msgstr "binomiaal"
 
-msgid "gaussian"
+#, fuzzy
+msgid "Gaussian"
 msgstr "gaussische"
 
 msgid "gamma"
@@ -484,7 +491,8 @@ msgstr "Waarschijnlijkheidsratio toets"
 msgid "parametric bootstrap"
 msgstr "parametrische bootstrap"
 
-msgid "Model terms tested with %s testMethod."
+#, fuzzy
+msgid "Model terms tested with %s method."
 msgstr "Model termen getest met %s methode."
 
 msgid "P-values are not adjusted."
@@ -630,6 +638,13 @@ msgstr ""
 "De modelformule is waarschijnlijk te lang. Probeer de namen van de "
 "variabelen in te korten."
 
+msgid ""
+"The Kenward-Roger degrees of freedom approximation failed because the "
+"variance-covariance matrix is singular. This can happen with overly complex "
+"models or when the model structure does not support this method. Try using "
+"asymptotic degrees of freedom instead."
+msgstr ""
+
 msgid "The following variable is used as a random effects grouping factor: %s."
 msgid_plural ""
 "The following variables are used as random effects grouping factors: %s."
@@ -773,6 +788,13 @@ msgstr[0] ""
 msgstr[1] ""
 "LOO schatting onbetrouwbaar -- %1.0f observaties met een schaalparameter k "
 "van de gegeneraliseerde Pareto distributie hoger dan .5."
+
+#~ msgid ""
+#~ "%s requires that the number or proportion of successes is an integer."
+#~ msgstr "%s vereist dat het aantal of aandeel successen een geheel getal is."
+
+#~ msgid "%s requires that the dependent variable is continuous."
+#~ msgstr "%s vereist dat de afhankelijke variabele continu is."
 
 #~ msgid "Intercept"
 #~ msgstr "Intercept"

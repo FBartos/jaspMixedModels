@@ -1,0 +1,838 @@
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2025-12-23 10:37+0000\n"
+"Last-Translator: Jose Ramon Rueda <joseramon.rueda@ehu.eus>\n"
+"Language-Team: Basque <https://hosted.weblate.org/projects/jasp/"
+"jaspmixedmodels-qml/eu/>\n"
+"Language: eu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.15.1\n"
+"X-Qt-Contexts: true\n"
+
+msgctxt "Description|"
+msgid "Mixed Models"
+msgstr "Eredu Mistoak"
+
+msgctxt "Description|"
+msgid "Classical"
+msgstr "Klasikoa"
+
+msgctxt "Description|"
+msgid "Linear Mixed Models"
+msgstr "Eredu Misto Linealak"
+
+msgctxt "Description|"
+msgid "Generalized Linear Mixed Models"
+msgstr "Eredu Misto Lineal Orokorrak"
+
+msgctxt "Description|"
+msgid "Bayesian"
+msgstr "Bayestarra"
+
+msgctxt "Description|"
+msgid "Bayesian Linear Mixed Models"
+msgstr "Eredu Misto Lineal Bayesiarra"
+
+msgctxt "Description|"
+msgid "Bayesian Generalized Linear Mixed Models"
+msgstr "Bayesiarra Eredu Misto Lineal Orokorra"
+
+msgctxt "MixedModelsBOptions|"
+msgid "Options"
+msgstr "Aukerak"
+
+msgctxt "MixedModelsBOptions|"
+msgid "Burnin"
+msgstr "Burnin"
+
+msgctxt "MixedModelsBOptions|"
+msgid "Chains"
+msgstr "Kateak"
+
+msgctxt "MixedModelsBOptions|"
+msgid "Adapt delta"
+msgstr "Egokitu delta"
+
+msgctxt "MixedModelsBOptions|"
+msgid "Maximum treedepth"
+msgstr "Zuhaitz-sakonera maximoa"
+
+msgctxt "MixedModelsBOptions|"
+msgid "Show"
+msgstr "Erakutsi"
+
+#, fuzzy
+msgctxt "MixedModelsBOptions|"
+msgid "Differences from intercept"
+msgstr "Ebakitze-puntutik desberdintasunak"
+
+msgctxt "MixedModelsBOptions|"
+msgid "Marginal means"
+msgstr "Batez besteko marjinalak"
+
+msgctxt "MixedModelsBOptions|"
+msgid "Model summary"
+msgstr "Ereduaren laburpena"
+
+msgctxt "MixedModelsBOptions|"
+msgid "Fixed effects estimates"
+msgstr "Efektu finkoen estimazioak"
+
+msgctxt "MixedModelsBOptions|"
+msgid "Variance/correlation estimates"
+msgstr "Bariantza/korrelazio estimazioak"
+
+msgctxt "MixedModelsBOptions|"
+msgid "Credible interval"
+msgstr "Tarte sinesgarria"
+
+msgctxt "MixedModelsMCMCDiagnostics|"
+msgid "MCMC diagnostics"
+msgstr "MCMC diagnostikoak"
+
+msgctxt "MixedModelsMCMCDiagnostics|"
+msgid "Model terms"
+msgstr "Ereduaren terminoak"
+
+msgctxt "MixedModelsMCMCDiagnostics|"
+msgid "Horizontal axis"
+msgstr "Ardatz horizontala"
+
+msgctxt "MixedModelsMCMCDiagnostics|"
+msgid "Plotted term"
+msgstr "Marraztutako terminoa"
+
+msgctxt "MixedModelsMCMCDiagnostics|"
+msgid "Vertical axis"
+msgstr "Ardatz bertikala"
+
+msgctxt "MixedModelsMCMCDiagnostics|"
+msgid "Plot type"
+msgstr "Grafiko mota"
+
+msgctxt "MixedModelsMCMCDiagnostics|"
+msgid "Traceplot"
+msgstr "Traza-grafikoa"
+
+msgctxt "MixedModelsMCMCDiagnostics|"
+msgid "Scatterplot"
+msgstr "Sakabanaketa-grafikoa"
+
+msgctxt "MixedModelsMCMCDiagnostics|"
+msgid "Histogram"
+msgstr "Histograma"
+
+msgctxt "MixedModelsMCMCDiagnostics|"
+msgid "Density"
+msgstr "Dentsitatea"
+
+msgctxt "MixedModelsMCMCDiagnostics|"
+msgid "Autocorrelations"
+msgstr "Autokorrelazioak"
+
+msgctxt "MixedModelsModel|"
+msgid "Model"
+msgstr "Eredua"
+
+msgctxt "MixedModelsModel|"
+msgid "Model components"
+msgstr "Ereduaren osagaiak"
+
+msgctxt "MixedModelsModel|"
+msgid "Fixed effects"
+msgstr "Efektu finkoak"
+
+msgctxt "MixedModelsModel|"
+msgid "Random effects"
+msgstr "Ausazko efektuak"
+
+msgctxt "MixedModelsModel|"
+msgid "Correlations"
+msgstr "Korrelazioak"
+
+msgctxt "MixedModelsOptions|"
+msgid "Options"
+msgstr "Aukerak"
+
+msgctxt "MixedModelsOptions|"
+msgid "Type"
+msgstr "Mota"
+
+msgctxt "MixedModelsOptions|"
+msgid "II"
+msgstr "II"
+
+msgctxt "MixedModelsOptions|"
+msgid "III"
+msgstr "III"
+
+#, fuzzy
+msgctxt "MixedModelsOptions|"
+msgid "Test intercept"
+msgstr "Proba ebakidura??"
+
+msgctxt "MixedModelsOptions|"
+msgid "Likelihood ratio tests"
+msgstr "Likelihood ??-ratio probak"
+
+msgctxt "MixedModelsOptions|"
+msgid "Parametric bootstrap"
+msgstr "Bootstrap parametrikoa"
+
+msgctxt "MixedModelsOptions|"
+msgid "No. samples"
+msgstr "Lagin kopurua"
+
+msgctxt "MixedModelsOptions|"
+msgid "Model summary"
+msgstr "Ereduaren laburpena"
+
+msgctxt "MixedModelsOptions|"
+msgid "Fixed effects estimates"
+msgstr "Efektu finkoen estimazioak"
+
+msgctxt "MixedModelsOptions|"
+msgid "Variance/correlation estimates"
+msgstr "Bariantza/korrelazio estimazioak"
+
+msgctxt "MixedModelsOptions|"
+msgid "Vovk-Sellke maximum p-ratio"
+msgstr "Vovk-Sellke maximoaren p-ratioa"
+
+msgctxt "MixedModelsPlots|"
+msgid "Plots"
+msgstr "Grafikoak"
+
+msgctxt "MixedModelsPlots|"
+msgid "Model factors"
+msgstr "Ereduaren faktoreak"
+
+msgctxt "MixedModelsPlots|"
+msgid "Horizontal axis"
+msgstr "Ardatz horizontala"
+
+msgctxt "MixedModelsPlots|"
+msgid "Separate lines"
+msgstr "Lerro bereiziak"
+
+msgctxt "MixedModelsPlots|"
+msgid "Separate plots"
+msgstr "Grafiko bereiziak"
+
+msgctxt "MixedModelsPlots|"
+msgid "Random effects grouping factors"
+msgstr "Ausazko efektuen taldekatze faktoreak"
+
+msgctxt "MixedModelsPlots|"
+msgid "Background data show"
+msgstr "Atzeko planoko datuek erakusten dute"
+
+msgctxt "MixedModelsPlots|"
+msgid "Confidence interval method"
+msgstr "Konfiantza-tartearen metodoa"
+
+msgctxt "MixedModelsPlots|"
+msgid "Model"
+msgstr "Eredua"
+
+msgctxt "MixedModelsPlots|"
+msgid "None"
+msgstr "Bat ere ez"
+
+msgctxt "MixedModelsPlots|"
+msgid "Mean"
+msgstr "Batez bestekoa"
+
+msgctxt "MixedModelsPlots|"
+msgid "Within"
+msgstr "Artean edo Barruan??"
+
+msgctxt "MixedModelsPlots|"
+msgid "Between"
+msgstr "Artean"
+
+msgctxt "MixedModelsPlots|"
+msgid "Confidence interval"
+msgstr "Konfiantza tartea"
+
+msgctxt "MixedModelsPlots|"
+msgid "Distinguish factor levels"
+msgstr "Faktore-mailak bereiztea"
+
+msgctxt "MixedModelsPlots|"
+msgid "Color"
+msgstr "Kolorea"
+
+msgctxt "MixedModelsPlots|"
+msgid "Shape"
+msgstr "Forma"
+
+msgctxt "MixedModelsPlots|"
+msgid "Linetype"
+msgstr "Lerro-mota"
+
+msgctxt "MixedModelsPlots|"
+msgid "Fill"
+msgstr "Bete"
+
+msgctxt "MixedModelsPlots|"
+msgid "Jitter"
+msgstr "Dardara"
+
+msgctxt "MixedModelsPlots|"
+msgid "Violin"
+msgstr "Biolina"
+
+msgctxt "MixedModelsPlots|"
+msgid "Boxplot"
+msgstr "Kaxa-diagrama"
+
+msgctxt "MixedModelsPlots|"
+msgid "Boxjitter"
+msgstr "Kaxa-dardara"
+
+msgctxt "MixedModelsPlots|"
+msgid "Count"
+msgstr "Kopurua"
+
+msgctxt "MixedModelsPlots|"
+msgid "Transparency"
+msgstr "Gardentasuna"
+
+msgctxt "MixedModelsPlots|"
+msgid "Jitter width"
+msgstr "Dardara-zabalera"
+
+msgctxt "MixedModelsPlots|"
+msgid "Jitter height"
+msgstr "Dardara-altuera"
+
+msgctxt "MixedModelsPlots|"
+msgid "Dodge"
+msgstr "Saihestu"
+
+msgctxt "MixedModelsPlots|"
+msgid "Theme"
+msgstr "Gaia"
+
+msgctxt "MixedModelsPlots|"
+msgid "Light"
+msgstr "Argia"
+
+msgctxt "MixedModelsPlots|"
+msgid "Minimal"
+msgstr "Minimalista"
+
+msgctxt "MixedModelsPlots|"
+msgid "Legend position"
+msgstr "Legendaren posizioa"
+
+msgctxt "MixedModelsPlots|"
+msgid "Bottom"
+msgstr "Behealdea"
+
+msgctxt "MixedModelsPlots|"
+msgid "Right"
+msgstr "Eskuina"
+
+msgctxt "MixedModelsPlots|"
+msgid "Top"
+msgstr "Goia"
+
+msgctxt "MixedModelsPlots|"
+msgid "Left"
+msgstr "Ezkerra"
+
+msgctxt "MixedModelsPlots|"
+msgid "Dark grey"
+msgstr "Gris iluna"
+
+msgctxt "MixedModelsPlots|"
+msgid "Black"
+msgstr "Beltza"
+
+msgctxt "MixedModelsPlots|"
+msgid "Light grey"
+msgstr "Gris argia"
+
+msgctxt "MixedModelsPlots|"
+msgid "Blue"
+msgstr "Urdina"
+
+msgctxt "MixedModelsPlots|"
+msgid "Red"
+msgstr "Gorria"
+
+msgctxt "MixedModelsPlots|"
+msgid "Violet"
+msgstr "Morea"
+
+msgctxt "MixedModelsPlots|"
+msgid "Relative size text"
+msgstr "Testuaren tamaina erlatiboa"
+
+msgctxt "MixedModelsPlots|"
+msgid "Relative size foreground data"
+msgstr "Aurreko planoko datuak tamaina erlatiboan"
+
+msgctxt "MixedModelsPlots|"
+msgid "Estimates table"
+msgstr "Estimazioen taula"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Dependent variable"
+msgstr "Menpeko aldagaia"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Number of trials"
+msgstr "Saiakera kopurua"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Fixed effects variables"
+msgstr "Efektu finkoen aldagaiak"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Random effects grouping factors"
+msgstr "Ausazko efektuen taldekatze faktoreak"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Family"
+msgstr "Familia"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Binomial"
+msgstr "Binomiala"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Binomial (aggregated)"
+msgstr "Binomiala (agregatua)"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Gaussian"
+msgstr "Gaussiarra"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Gamma"
+msgstr "Gamma"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Inverse Gaussian"
+msgstr "Gaussiar Alderantzizkoa"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Poisson"
+msgstr "Poisson"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Negative Binomial"
+msgstr "Binomial Negatiboa"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Beta"
+msgstr "Beta"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Link"
+msgstr "Esteka"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Logit"
+msgstr "Logit"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Probit"
+msgstr "Probit"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Cauchit"
+msgstr "Cauchit"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Complementary LogLog"
+msgstr "LogLog Osagarria"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Identity"
+msgstr "Identitatea"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Log"
+msgstr "Log"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Sqrt"
+msgstr "Erro karratua"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Inverse"
+msgstr "Alderantzizkoa"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Estimated marginal means"
+msgstr "Kalkulatutako batez besteko marjinalak"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Model variables"
+msgstr "Eredu aldagaiak"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Selected variables"
+msgstr "Hautatutako aldagaiak"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Response scale"
+msgstr "Erantzun eskala"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Specify contrasts"
+msgstr "Zehaztu kontrasteak"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Estimated trends/conditional slopes"
+msgstr "Kalkulatutako joerak/malda baldintzatuak"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Continous variables"
+msgstr "Aldagai jarraituak"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Trend variable"
+msgstr "Joera aldagaia"
+
+msgctxt "MixedModelsBLMM|"
+msgid "Dependent variable"
+msgstr "Menpeko aldagaia"
+
+msgctxt "MixedModelsBLMM|"
+msgid "Fixed effects variables"
+msgstr "Efektu finkoen aldagaiak"
+
+msgctxt "MixedModelsBLMM|"
+msgid "Random effects grouping factors"
+msgstr "Ausazko efektuen taldekatze faktoreak"
+
+msgctxt "MixedModelsBLMM|"
+msgid "Estimated marginal means"
+msgstr "Batez besteko marjinal estimatuak"
+
+msgctxt "MixedModelsBLMM|"
+msgid "Model variables"
+msgstr "Eredu aldagaiak"
+
+msgctxt "MixedModelsBLMM|"
+msgid "Selected variables"
+msgstr "Hautatutako aldagaiak"
+
+msgctxt "MixedModelsBLMM|"
+msgid "Confidence interval"
+msgstr "Konfiantza tartea"
+
+msgctxt "MixedModelsBLMM|"
+msgid "SD factor covariates"
+msgstr "DE (SD)  faktore kobarianteak"
+
+msgctxt "MixedModelsBLMM|"
+msgid "Specify contrasts"
+msgstr "Zehaztu kontrasteak"
+
+msgctxt "MixedModelsBLMM|"
+msgid "Estimated trends/conditional slopes"
+msgstr "Joera/malda baldintzatuak estimatuak"
+
+msgctxt "MixedModelsBLMM|"
+msgid "Continous variables"
+msgstr "Aldagai jarraituak"
+
+msgctxt "MixedModelsBLMM|"
+msgid "Trend variable"
+msgstr "Joera aldagaia"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Dependent variable"
+msgstr "Menpeko aldagaia"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Number of trials"
+msgstr "Saiakera kopurua"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Fixed effects variables"
+msgstr "Efektu finkoen aldagaiak"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Random effects grouping factors"
+msgstr "Ausazko efektuen taldekatze faktoreak"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Family"
+msgstr "Familia"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Binomial"
+msgstr "Binomiala"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Binomial (aggregated)"
+msgstr "Binomiala (agregatua)"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Gaussian"
+msgstr "Gaussiarra"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Gamma"
+msgstr "Gamma"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Inverse Gaussian"
+msgstr "Alderantzizko Gaussiarra"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Poisson"
+msgstr "Poisson"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Link"
+msgstr "Esteka"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Logit"
+msgstr "Logit"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Probit"
+msgstr "Probit"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Cauchit"
+msgstr "Cauchit"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Complementary LogLog"
+msgstr "LogLog Osagarria"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Identity"
+msgstr "Identitatea"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Log"
+msgstr "Log"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Sqrt"
+msgstr "Erro karratua"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Inverse"
+msgstr "Alderantzizkoa"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Estimated marginal means"
+msgstr "Kalkulatutako batez besteko marjinalak"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Model variables"
+msgstr "Eredu aldagaiak"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Selected variables"
+msgstr "Hautatutako aldagaiak"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Confidence interval"
+msgstr "Konfiantza tartea"
+
+msgctxt "MixedModelsGLMM|"
+msgid "SD factor covariates"
+msgstr "DE faktorearen kobarianteak"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Compare marginal means to:"
+msgstr "Konparatu batez besteko marjinalak honekin:"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Response scale"
+msgstr "Erantzun eskala"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Specify contrasts"
+msgstr "Zehaztu kontrasteak"
+
+msgctxt "MixedModelsGLMM|"
+msgid "P-value adjustment"
+msgstr "P-balioaren doikuntza"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Multivariate-t"
+msgstr "Aldagai anitzeko t"
+
+msgctxt "MixedModelsGLMM|"
+msgid "None"
+msgstr "Bat ere ez"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Estimated trends/conditional slopes"
+msgstr "Estimatutako joerak/baldintzapeko maldak"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Continous variables"
+msgstr "Aldagai jarraituak"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Trend variable"
+msgstr "Joera aldagaia"
+
+msgctxt "MixedModelsGLMM|"
+msgid "Compare trends to:"
+msgstr "Konparatu joerak honekin:"
+
+msgctxt "MixedModelsLMM|"
+msgid "Dependent variable"
+msgstr "Menpeko aldagaia"
+
+msgctxt "MixedModelsLMM|"
+msgid "Fixed effects variables"
+msgstr "Efektu finkoen aldagaiak"
+
+msgctxt "MixedModelsLMM|"
+msgid "Random effects grouping factors"
+msgstr "Ausazko efektuen taldekatze faktoreak"
+
+msgctxt "MixedModelsLMM|"
+msgid "Estimated marginal means"
+msgstr "Estimatutako marjina-batez bestekoak"
+
+msgctxt "MixedModelsLMM|"
+msgid "Model variables"
+msgstr "Eredu aldagaiak"
+
+msgctxt "MixedModelsLMM|"
+msgid "Selected variables"
+msgstr "Hautatutako aldagaiak"
+
+msgctxt "MixedModelsLMM|"
+msgid "Confidence interval"
+msgstr "Konfiantza tartea"
+
+msgctxt "MixedModelsLMM|"
+msgid "SD factor covariates"
+msgstr "DE (SD) faktorearen kobarianteak"
+
+msgctxt "MixedModelsLMM|"
+msgid "Estimate df"
+msgstr "Estimatu ag"
+
+msgctxt "MixedModelsLMM|"
+msgid "Asymptotic"
+msgstr "Asintotikoa"
+
+#, fuzzy
+msgctxt "MixedModelsLMM|"
+msgid "Force df estimation"
+msgstr "Eragin df-estimazioa"
+
+msgctxt "MixedModelsLMM|"
+msgid "Compare marginal means to:"
+msgstr "Batez besteko marjinalak honako hauekin alderatu:"
+
+msgctxt "MixedModelsLMM|"
+msgid "Specify contrasts"
+msgstr "Kontrasteak zehaztu"
+
+msgctxt "MixedModelsLMM|"
+msgid "P-value adjustment"
+msgstr "P-balioaren doikuntza"
+
+msgctxt "MixedModelsLMM|"
+msgid "Multivariate-t"
+msgstr "Aldagai anitzeko t"
+
+msgctxt "MixedModelsLMM|"
+msgid "None"
+msgstr "Bat ere ez"
+
+msgctxt "MixedModelsLMM|"
+msgid "Estimated trends/conditional slopes"
+msgstr "Joera estimatuak/malda baldintzatuak"
+
+msgctxt "MixedModelsLMM|"
+msgid "Continous variables"
+msgstr "Aldagai jarraituak"
+
+msgctxt "MixedModelsLMM|"
+msgid "Trend variable"
+msgstr "Joera aldagaia"
+
+msgctxt "MixedModelsLMM|"
+msgid "Compare trends to:"
+msgstr "Joerak honako hauekin alderatu:"
+
+msgctxt "Description|"
+msgid "Evaluate the difference between multiple means with random effects"
+msgstr "Batez besteko anitzen arteko aldea ebaluatu ausazko efektuekin"
+
+msgctxt "MixedModelsPlots|"
+msgid "White background"
+msgstr "Atzeko plano zuria"
+
+msgctxt "MixedModelsPlots|"
+msgid "Border color"
+msgstr "Ertzaren kolorea"
+
+msgctxt "MixedModelsBOptions|"
+msgid "Random effects estimates"
+msgstr "Ausazko efektuen estimazioak"
+
+#, qt-format
+msgctxt "MixedModelsModel|"
+msgid "Random components (%1)"
+msgstr "Ausazko osagaiak (%1)"
+
+msgctxt "MixedModelsOptions|"
+msgid "Random effects estimates"
+msgstr "Ausazko efektuen estimazioak"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "Confidence interval"
+msgstr "Konfiantza tartea"
+
+msgctxt "MixedModelsBGLMM|"
+msgid "SD factor covariates"
+msgstr "DE faktorearen kobarianteak"
+
+msgctxt "MixedModelsBOptions|"
+msgid "Samples"
+msgstr "Laginak"
+
+msgctxt "MixedModelsOptions|"
+msgid "Test method"
+msgstr "Proba-metodoa"
+
+msgctxt "MixedModelsPlots|"
+msgid "Background element"
+msgstr "Atzeko planoaren elementua"
+
+msgctxt "MixedModelsPlots|"
+msgid "Element width"
+msgstr "Elementuaren zabalera"
+
+#, fuzzy
+msgctxt "MixedModelsModel|"
+msgid "Include intercept"
+msgstr "Ebaketa-puntua barne"
+
+msgctxt "MixedModelsOptions|"
+msgid "Factor contrast"
+msgstr "Faktoreen kontrastea"
+
+msgctxt "MixedModelsOptions|"
+msgid "Sum"
+msgstr "Batuketa"
+
+msgctxt "MixedModelsOptions|"
+msgid "Treatment"
+msgstr "Tratamendua"

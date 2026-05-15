@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: jaspMixedModels 0.95.0\n"
-"POT-Creation-Date: 2025-06-21 03:09\n"
+"Project-Id-Version: jaspMixedModels 0.96.4\n"
+"POT-Creation-Date: 2026-04-25 03:45\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,13 +26,10 @@ msgstr ""
 msgid "%s requires that the dependent variable is an integer."
 msgstr ""
 
-msgid "%s requires that the dependent variable contains only 0 and 1."
+msgid "%s requires that the dependent variable contains only two levels."
 msgstr ""
 
 msgid "%s requires that the number of trials variable is an integer."
-msgstr ""
-
-msgid "%s requires that the number or proportion of successes is an integer."
 msgstr ""
 
 msgid "%s requires that the number of successes is lower that the number of trials."
@@ -44,10 +41,10 @@ msgstr ""
 msgid "%s requires that the dependent variable is either the number or proportion of successes out of the number of trials."
 msgstr ""
 
-msgid "%s requires that the dependent variable is continuous."
+msgid "At least one random effect needs to be specified for the '%1$s' random effect grouping factors.%2$s"
 msgstr ""
 
-msgid "At least one random effect needs to be specified for the '%1$s' random effect grouping factors.%2$s"
+msgid "Parametric bootstrap is not supported for %s family. Please use a different test method (e.g., likelihood ratio test)."
 msgstr ""
 
 msgid "Mixed-effects models with a fixed intercept only are not supported for aggregated binomial family."
@@ -90,6 +87,9 @@ msgid "III"
 msgstr ""
 
 msgid "II"
+msgstr ""
+
+msgid "'%1$s' level coded as success."
 msgstr ""
 
 msgid "Fit statistics"
@@ -320,10 +320,13 @@ msgstr ""
 msgid "Results are averaged over the levels of: %s."
 msgstr ""
 
+msgid "Bernoulli"
+msgstr ""
+
 msgid "binomial"
 msgstr ""
 
-msgid "gaussian"
+msgid "Gaussian"
 msgstr ""
 
 msgid "gamma"
@@ -356,7 +359,7 @@ msgstr ""
 msgid "parametric bootstrap"
 msgstr ""
 
-msgid "Model terms tested with %s testMethod."
+msgid "Model terms tested with %s method."
 msgstr ""
 
 msgid "P-values are not adjusted."
@@ -432,6 +435,9 @@ msgid "The optimizer failed to find a solution in the specified number of iterat
 msgstr ""
 
 msgid "The model formula is probably too long. Try shortening variable names."
+msgstr ""
+
+msgid "The Kenward-Roger degrees of freedom approximation failed because the variance-covariance matrix is singular. This can happen with overly complex models or when the model structure does not support this method. Try using asymptotic degrees of freedom instead."
 msgstr ""
 
 msgid        "The following variable is used as a random effects grouping factor: %s."
